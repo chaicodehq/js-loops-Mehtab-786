@@ -36,5 +36,36 @@
  *   rangoli(3) // => ["  *", " * *", "* * *", " * *", "  *"]
  */
 export function rangoli(n) {
-  // Your code here
-}
+  if (typeof n === 'string' || Number.isNaN(n) || n <= 0 || !Number.isInteger(n)) return [];
+
+  let result = [];
+  for (let i = 1; i <= n; i++) {
+    let stars = i
+    let spaces = n - i
+    let row = '';
+    for (let j = 0; j < spaces; j++) {
+      row += ' '
+    }
+    for (let j = 1; j <= stars; j++) {
+      row += '*';
+      if (stars != j) row += ' ';
+    }
+    result.push(row)
+  }
+
+  for (let i = n - 1; i >= 1; i--) {
+    let stars = i
+    let spaces = n - i
+    let row = '';
+    for (let j = 0; j < spaces; j++) {
+      row += ' '
+    }
+    for (let j = 1; j <= stars; j++) {
+      row += '*';
+      if (stars != j) row += ' ';
+    }
+    result.push(row)
+  }
+
+  return result;
+};
