@@ -1,7 +1,7 @@
 /**
  * 🍗 Paradise Biryani Batch System
  *
- * Paradise restaurant mein biryani orders aate hain. Kitchen ek batch mein
+ *  Paradise restaurant mein biryani orders aate hain. Kitchen ek batch mein
  * sirf 5 plates bana sakti hai. Agar ek order mein zyada plates hain toh
  * woh multiple batches mein split hota hai.
  *
@@ -34,5 +34,31 @@
  *   // => { totalBatches: 3, totalPlates: 15, ordersProcessed: 2 }
  */
 export function biryaniBatchProcessor(orders) {
-  // Your code here
+  if (!Array.isArray(orders) || orders.length <= 0) return { totalBatches: 0, totalPlates: 0, ordersProcessed: 0 };
+  let totalBatches = 0;
+  let totalPlates = 0;
+  let ordersProcessed = 0;
+  let ordersRemoved = 0;
+
+  do {
+    let itemQuantity = orders[ordersProcessed];
+    ordersProcessed++;
+
+    if (!Number.isInteger(itemQuantity) || Number.isNaN(itemQuantity) || typeof itemQuantity === 'string' || itemQuantity <= 0) {
+      ordersRemoved++;
+      continue
+    } else if (itemQuantity > 5) {
+      let plates = Math.round(itemQuantity / 5);
+      if (itemQuantity % 5) plates++;     
+      totalBatches += plates;
+    } else totalBatches += 1;
+  } while (ordersProcessed < orders.length);
+
+  ordersProcessed = orders.length - ordersRemoved
+  totalPlates = orders.reduce((sum, next) => {
+    if (!Number.isInteger(next) || Number.isNaN(next) || typeof next === 'string' || next <= 0) return sum;
+    return sum + next
+  }, 0)
+
+  return { totalBatches, totalPlates, ordersProcessed }
 }
